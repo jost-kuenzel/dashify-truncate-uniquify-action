@@ -1,16 +1,24 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import convert from './convert'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const input: string = core.getInput('input', {required: true})
+    const desiredLength: string = core.getInput('desiredLength')
+    const suffixLength: string = core.getInput('suffixLength')
+    const desiredLengthNum = parseInt(desiredLength) || 1024
+    const suffixLengthNum = parseInt(suffixLength) || 7
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    core.debug(`Received str: ${input}`)
+    core.debug(
+      `Received desiredLength: ${desiredLength}, interpreted as: ${desiredLengthNum}`
+    )
+    core.debug(
+      `Received suffixLength: ${suffixLength}, interpreted as: ${suffixLengthNum}`
+    )
 
-    core.setOutput('time', new Date().toTimeString())
+    const result: string = convert(input, desiredLengthNum, suffixLengthNum)
+    core.setOutput('result', result)
   } catch (error) {
     core.setFailed(error.message)
   }
