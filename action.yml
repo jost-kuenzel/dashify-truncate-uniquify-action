@@ -1,11 +1,21 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Dashify truncate uniquify"
+description: "Dashifies a string, adds a suffix to make the result uniq within a desired length."
+author: "jost.kuenzel@gmail.com"
 inputs:
-  milliseconds: # change this
+  input:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: "string to dashify, truncate, uniquify"
+    default: "default value if applicable"
+  desiredLength:
+    required: true
+    description: "desired length of the resulting string."
+  suffixLength:
+    required: true
+    description: "length of suffix if input is longer than desiredLength"
+    default: "64"
+outputs:
+  result:
+    description: "Dashified, truncated, uniquified string"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
